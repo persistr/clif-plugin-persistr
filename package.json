@@ -10,7 +10,7 @@
     "url": "https://github.com/persistr/clif-plugin-persistr.git"
   },
   "dependencies": {
-    "@persistr/js": "^4.0.0"
+    "@persistr/js": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
