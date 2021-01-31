@@ -3,6 +3,38 @@ module.exports = {
   initialize: (toolbox) => {
     toolbox.persistr = persistr
     toolbox.session = new Session(persistr, toolbox.settings)
+    return { prerun: [ loggedin, loggedout ]}
+  }
+}
+
+const loggedin = async (toolbox, cmd, args) => {
+  const { session } = toolbox
+
+  // Only apply this middleware to commands with specific labels.
+  if (!cmd.labels || !cmd.labels.includes('logged-in')) {
+    return
+  }
+
+  // If not logged in, abort the command.
+  if (!session.active) {
+    throw new Error(`Not logged in`)
+  }
+
+  // Add Persistr account to toolbox.
+  toolbox.account = await session.resume()
+}
+
+const loggedout = async (toolbox, cmd, args) => {
+  const { session } = toolbox
+
+  // Only apply this middleware to commands with specific labels.
+  if (!cmd.labels || !cmd.labels.includes('logged-out')) {
+    return
+  }
+
+  // If already logged in, abort the command.
+  if (session.active) {
+    throw new Error(`${session.email} already logged in`)
   }
 }
 
