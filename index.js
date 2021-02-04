@@ -20,8 +20,8 @@ const loggedin = async (toolbox, cmd, args) => {
     throw new Error(`Not logged in`)
   }
 
-  // Add Persistr account to toolbox.
-  toolbox.account = await session.resume()
+  // Add Persistr connection to toolbox.
+  toolbox.connection = await session.resume()
 }
 
 const loggedout = async (toolbox, cmd, args) => {
@@ -34,7 +34,7 @@ const loggedout = async (toolbox, cmd, args) => {
 
   // If already logged in, abort the command.
   if (session.active) {
-    throw new Error(`${session.email} already logged in`)
+    throw new Error(`${session.username} already logged in`)
   }
 }
 
@@ -58,36 +58,36 @@ class Session {
   }
 
   async begin(credentials) {
-    const account = await this.persistr.connect({
+    const connection = await this.persistr.connect({
       server: this.settings.server,
       credentials,
       authorization: () => this.session.authorization,
-      authorized: authorization => this.session = { email: credentials.email, authorization }
+      authorized: authorization => this.session = { username: credentials.username, authorization }
     })
-    const details = await account.details()
-    return account
+    const details = await connection.details()
+    return connection
   }
 
   async resume() {
-    const account = await this.persistr.connect({
+    const connection = await this.persistr.connect({
       server: this.settings.server,
       authorization: () => this.session.authorization,
       authorized: authorization => this.session.authorization = authorization
     })
-    return account
+    return connection
   }
 
   async end() {
     const session = this.session
     delete this.settings.sessions[this.server]
-    return session.email
+    return session.username
   }
 
   get active() {
-    return (this.session.email && this.session.authorization)
+    return (this.session.username && this.session.authorization)
   }
 
-  get email() {
-    return this.session.email
+  get username() {
+    return this.session.username
   }
 }
