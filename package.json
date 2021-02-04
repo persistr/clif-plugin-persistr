@@ -1,6 +1,6 @@
 {
   "name": "@persistr/clif-plugin-persistr",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Persistr plugin for @persistr/clif",
   "main": "index.js",
   "author": "Sasa Djolic <sasa.djolic@gmail.com> (https://www.linkedin.com/in/sasadjolic/)",
