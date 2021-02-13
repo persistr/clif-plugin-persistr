@@ -64,7 +64,7 @@ class Session {
       authorization: () => this.session.authorization,
       authorized: authorization => this.session = { username: credentials.username, authorization }
     })
-    const details = await connection.details()
+    const profile = await connection.account().profile()
     return connection
   }
 
