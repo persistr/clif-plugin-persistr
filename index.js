@@ -1,9 +1,13 @@
 const { persistr } = require('@persistr/js')
 module.exports = {
   initialize: (toolbox) => {
-    toolbox.persistr = persistr
-    toolbox.session = new Session(persistr, toolbox.settings)
-    return { prerun: [ loggedin, loggedout ]}
+    return {
+      toolbox: {
+        persistr,
+        session: new Session(persistr, toolbox.settings)
+      },
+      prerun: [ loggedin, loggedout ]
+    }
   }
 }
 
